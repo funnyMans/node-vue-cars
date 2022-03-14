@@ -5,19 +5,18 @@
     </v-card-title>
 
     <div v-if="!showDetails" class="img-container">
-      <img :src="'/car-concept.jpg'" class="img-size" />
+      <img :src="'/car_icon.svg'" class="img-size" />
     </div>
+
     <div v-else class="content">
-      <div>
-        <h3>{{ details.Category }}</h3>
-        <h4>{{ details.Year }}</h4>
-        <p>{{ details.createdAt }}</p>
-      </div>
+      <span>{{ details.Category }}</span>
+      <span>{{ details.Year }}</span>
+      <span>{{ new Date(details.createdAt).toDateString() }}</span>
     </div>
 
     <v-card-actions>
       <button @click="showDetails = !showDetails" class="show-details">
-        <span>{{ !showDetails ? "Show" : "Hide" }} details</span>
+        <span>{{ !showDetails ? "Show details" : "Hide details" }}</span>
       </button>
     </v-card-actions>
   </v-card>
@@ -29,14 +28,14 @@ import { defineProps, ref } from "vue";
 const props = defineProps({
   details: Object,
 });
+
 const showDetails = ref(false);
 </script>
 
 <style scoped>
 .single-car {
-  width: 17%;
-  min-width: 250px;
-  height: 400px;
+  width: 250px;
+  height: 330px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,25 +43,60 @@ const showDetails = ref(false);
   border-radius: 5px;
   box-shadow: 10px 8px 10px 0;
   justify-content: space-between;
+  background: #334d50; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #cbcaa5, #334d50);
+  background: linear-gradient(to right, #cbcaa5, #334d50);
+}
+.v-card-title {
+  font-family: "Lucida Sans";
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: whitesmoke;
+  transition: 0.5s ease-in-out;
+}
+.v-card-title:hover {
+  color: rgb(163, 223, 163);
+  transform: scale(1.15);
 }
 .content {
-  height: 245px;
+  max-width: 80%;
+  max-height: 205px;
+  height: inherit;
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  color: rgb(255, 255, 255);
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
+.content > span {
+  font-size: 1.2rem;
+  font-weight: 1000 !important;
+}
+
 .img-size {
-  width: 100%;
+  width: 80%;
+  transition: 0.7s;
+  filter: invert(99%) sepia(0%) saturate(2%) hue-rotate(152deg) brightness(106%)
+    contrast(100%);
+}
+.img-size:hover {
+  transform: scale(1.1);
 }
 .show-details {
-  padding: 5px 10px;
-  font-size: 1rem;
+  padding: 8px 10px;
+  border: none;
   border-radius: 5px;
+  background-color: rgb(214, 205, 205);
 }
 .show-details:hover {
   background-color: rgb(58, 53, 53);
   color: white;
   cursor: pointer;
+}
+.show-details > span {
+  font-size: 1rem;
+  font-weight: 550;
 }
 .single-car > h2 {
   color: rgb(241, 227, 21);

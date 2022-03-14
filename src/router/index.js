@@ -2,17 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import CarsList from "../components/CarsList.vue";
 import PageNotFound from "../views/PageNotFound.vue";
 import HomePage from "../views/HomePage.vue";
-
-const brands = [
-  "all",
-  "audi",
-  "bmw",
-  "mercedes-benz",
-  "lexus",
-  "nissan",
-  "porsche",
-  "toyota",
-];
+import { brands } from "../mock/index";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -44,7 +34,6 @@ const router = createRouter({
         },
       ],
     },
-
     {
       path: "/:pathMatch(.*)*",
       name: "not-found",

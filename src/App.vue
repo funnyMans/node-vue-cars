@@ -10,6 +10,9 @@ import PageNotFound from "./views/PageNotFound.vue";
 <style>
 @import "@/assets/base.css";
 
+body::-webkit-scrollbar {
+  display: none !important;
+}
 #app {
   width: 100%;
   display: flex;
@@ -17,5 +20,6 @@ import PageNotFound from "./views/PageNotFound.vue";
   margin: 0 auto;
   padding: 2rem, 2rem;
   font-weight: normal;
+  overflow-y: scroll;
 }
 </style>

@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
+    category: "All",
     cars: [
       {
         Year: 2020,
@@ -436,7 +437,9 @@ export default createStore({
     getAllCars: (state) => {
       return state.cars;
     },
-
+    getCategory: ({ category }) => {
+      return category;
+    },
     getAllMakes: ({ cars }) => {
       let makes = ["all"];
       cars.forEach((car) => makes.push(car.Make));
@@ -445,15 +448,20 @@ export default createStore({
 
     getActiveCars:
       ({ cars }) =>
-      (brand, text) => {
-        if (brand !== "all") {
-          return cars.filter((car) => car.Make.toLowerCase() === brand);
-        } else {
-          return cars;
-        }
+      (brand) => {
+        return brand !== "all"
+          ? cars.filter((car) => car.Make.toLowerCase() === brand)
+          : cars;
       },
   },
-
-  mutations: {},
-  actions: {},
+  mutations: {
+    SELECT_CATEGORY(state, category) {
+      state.category = category;
+    },
+  },
+  actions: {
+    selectCategory({ commit }, category) {
+      commit("SELECT_CATEGORY", category);
+    },
+  },
 });

@@ -2,7 +2,9 @@
   <v-app>
     <v-app-bar color="teal-darken-4" class="text-white bg-dark">
       <div class="logo">
-        <router-link to="/"><img src="/logo.png" alt="" /></router-link>
+        <router-link to="/"
+          ><img src="/wheel-svgrepo-com.svg" alt="" />Top Cars</router-link
+        >
       </div>
       <nav>
         <RouterLink
@@ -19,8 +21,9 @@
 </template>
 
 <script setup>
-import { RouterLink } from "vue-router";
 import { useStore } from "vuex";
+import { RouterLink } from "vue-router";
+
 const state = useStore();
 const brands = state.getters.getAllMakes;
 </script>
@@ -34,14 +37,27 @@ const brands = state.getters.getAllMakes;
   background-color: rgb(72, 72, 73);
 }
 .logo {
-  margin-top: 0.7rem;
   width: 20%;
 }
-.logo > a > img {
-  margin-left: 2rem;
-  width: 100%;
-  cursor: pointer;
+
+.logo > a {
+  font-size: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 6px;
+  color: black;
+  font-family: "Times New Roman", Times, serif;
+  text-decoration: none !important;
+  filter: invert(60%) sepia(30%) saturate(5623%) hue-rotate(157deg)
+    brightness(89%) contrast(101%);
 }
+.logo > a > img {
+  width: 10%;
+  cursor: pointer;
+  color: white;
+}
+
 nav {
   width: 100%;
   display: flex;
@@ -56,7 +72,6 @@ nav > a {
   text-transform: uppercase;
   font-size: 1.5rem;
 }
-
 .router-link-active {
   color: rgb(35, 103, 143);
   font-weight: 550;
@@ -73,11 +88,13 @@ nav > a {
     margin-left: 0;
   }
 }
+
 @media screen and (max-width: 850px) {
   nav > a {
     font-size: 0.8rem;
   }
 }
+
 @media screen and (max-width: 550px) {
   .logo {
     display: none;

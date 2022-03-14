@@ -28,10 +28,10 @@ const props = defineProps({
 });
 const data = reactive({
   items: [
-    { title: "All" },
     { title: "Sedan" },
-    { title: "SUV" },
     { title: "Coupe" },
+    { title: "SUV" },
+    { title: "Hatchback" },
     { title: "Van/Minivan" },
     { title: "Convertible" },
   ],

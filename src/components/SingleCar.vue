@@ -4,7 +4,7 @@
       {{ details.Model }}
     </v-card-title>
 
-    <div v-if="!showDetails" class="img-container">
+    <div v-if="false" class="img-container">
       <img :src="'/car_icon.svg'" class="img-size" />
     </div>
 

@@ -11,7 +11,17 @@
         </div>
       </div>
     </section>
-
+    <div class="categories">
+      <span
+        v-for="(item, idx) in categories"
+        :key="idx"
+        @click="store.dispatch('deleteCategories', idx)"
+        >{{ item }}</span
+      >
+    </div>
+    <v-btn v-if="categories.length" variant="outlined" color="error"
+      >Clear</v-btn
+    >
     <section class="cars-list">
       <SingleCar
         v-for="car in filteredCars"
@@ -40,11 +50,16 @@ const {
 const store = useStore();
 const title = brand.toUpperCase();
 const cars = computed(() => store.getters.getActiveCars(brand));
-const category = computed(() => store.getters.getCategory);
+const categories = computed(() => store.getters.getCategories);
 const filteredCars = computed(() => {
   return cars.value.filter((car) => {
-    if (category.value !== "All") {
-      return car.Category.includes(category.value);
+    if (categories.value.length) {
+      return (
+        categories.value.includes(car.Category) &&
+        car.Model.toLowerCase()
+          .replaceAll(/[\W_]+/g, "")
+          .includes(filterText.value)
+      );
     } else {
       return car.Model.toLowerCase()
         .replaceAll(/[\W_]+/g, "")
@@ -61,7 +76,7 @@ const filteredCars = computed(() => {
 }
 .header-container {
   width: 84%;
-  margin: 0 auto;
+  margin: 3rem auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -79,9 +94,10 @@ const filteredCars = computed(() => {
 }
 .list-title:hover {
   transform: scale(0.92);
+  cursor: pointer;
 }
-.search > input,
-.search > button {
+.search > input {
+  max-width: 10rem;
   height: 2rem;
   border-radius: 3px;
   margin-left: 3px;
@@ -96,6 +112,26 @@ const filteredCars = computed(() => {
 .search > button:hover {
   background-color: rgb(88, 84, 84);
   color: antiquewhite;
+}
+.categories {
+  margin-left: 2rem;
+  width: 30%;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+}
+.categories > span {
+  padding: 5px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 1.25rem;
+  color: white;
+  border-radius: 5px;
+}
+
+.categories > span:hover {
+  cursor: pointer;
+  background-color: lightgreen;
 }
 .cars-list {
   width: 80%;
@@ -112,5 +148,8 @@ const filteredCars = computed(() => {
   color: rgb(252, 155, 64);
   font-size: 3rem;
   margin-top: 15rem;
+}
+.v-btn {
+  margin: 1.5rem 0 0 3rem;
 }
 </style>

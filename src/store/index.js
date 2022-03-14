@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    category: "All",
+    categories: [],
     cars: [
       {
         Year: 2020,
@@ -46,7 +46,7 @@ export default createStore({
         Year: 2020,
         Make: "Audi",
         Model: "R8",
-        Category: "Coupe, Convertible",
+        Category: "Convertible",
         url: "../../public/Audi_R8.jpg",
         createdAt: "2020-01-27T20:44:17.665Z",
       },
@@ -203,7 +203,7 @@ export default createStore({
         Year: 2020,
         Make: "Mercedes-Benz",
         Model: "C-Class",
-        Category: "Convertible, Sedan, Coupe",
+        Category: "Convertible",
         createdAt: "2020-01-27T20:44:18.006Z",
       },
       {
@@ -437,8 +437,8 @@ export default createStore({
     getAllCars: (state) => {
       return state.cars;
     },
-    getCategory: ({ category }) => {
-      return category;
+    getCategories: ({ categories }) => {
+      return categories;
     },
     getAllMakes: ({ cars }) => {
       let makes = ["all"];
@@ -455,13 +455,23 @@ export default createStore({
       },
   },
   mutations: {
-    SELECT_CATEGORY(state, category) {
-      state.category = category;
+    SELECT_CATEGORY({ categories }, category) {
+      !categories.includes(category) && categories.push(category);
+    },
+    DELETE_CATEGORY({ categories }, idx) {
+      console.log(idx);
+
+      categories.splice(idx, 1);
+
+      console.log(categories);
     },
   },
   actions: {
     selectCategory({ commit }, category) {
       commit("SELECT_CATEGORY", category);
     },
+    deleteCategories({ commit }, category) {
+      commit("DELETE_CATEGORY", category);
+    },  
   },
 });

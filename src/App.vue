@@ -4,7 +4,6 @@
 
 <script setup>
 import Layout from "./layout/Layout.vue";
-import PageNotFound from "./views/PageNotFound.vue";
 </script>
 
 <style>

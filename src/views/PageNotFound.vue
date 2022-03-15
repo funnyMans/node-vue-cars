@@ -28,7 +28,6 @@ h3 {
   color: #fff;
   font-size: 5rem;
 }
-
 .error-page .link {
   font-size: 1.5rem;
   color: rgb(143, 111, 219);

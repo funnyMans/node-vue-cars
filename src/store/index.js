@@ -445,7 +445,6 @@ export default createStore({
       cars.forEach((car) => makes.push(car.Make));
       return [...new Set(makes)];
     },
-
     getActiveCars:
       ({ cars }) =>
       (brand) => {
@@ -459,11 +458,10 @@ export default createStore({
       !categories.includes(category) && categories.push(category);
     },
     DELETE_CATEGORY({ categories }, idx) {
-      console.log(idx);
-
       categories.splice(idx, 1);
-
-      console.log(categories);
+    },
+    DELETE_ALL({ categories }) {
+      categories.splice(0);
     },
   },
   actions: {
@@ -472,6 +470,9 @@ export default createStore({
     },
     deleteCategories({ commit }, category) {
       commit("DELETE_CATEGORY", category);
-    },  
+    },
+    deleteAllCategories({ commit }) {
+      commit("DELETE_ALL");
+    },
   },
 });

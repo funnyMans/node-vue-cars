@@ -30,12 +30,14 @@ import { RouterLink } from "vue-router";
   flex-direction: column;
   align-items: center;
 }
+
 h1 {
   color: rgb(235, 235, 221);
   font-family: "Times New Roman", Times, serif;
   font-size: 4rem;
   font-weight: 550;
 }
+
 h2 {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: beige;
@@ -58,9 +60,11 @@ button:hover {
   cursor: pointer;
   color: #fff !important;
 }
+
 a {
   text-decoration: none;
 }
+
 a > button {
   font-size: 2rem;
   color: rgb(223, 215, 215);

@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-menu top :offset-x="data.offset">
       <template v-slot:activator="{ props }">
-        <v-btn color="secondary" dark v-bind="props"> Category </v-btn>
+        <v-btn color="secondary" dark v-bind="props"> Filter </v-btn>
       </template>
 
       <v-list class="bg-dark">
@@ -37,17 +37,16 @@ const data = reactive({
   ],
   offset: true,
 });
-
-const hey = (context) => {
-  console.log("hey", context);
-};
 </script>
 <style scoped>
 .text-center:hover {
   cursor: pointer !important;
 }
 .bg-dark {
-  margin-top: 1rem;
+  display: flex;
+  position: absolute;
+  top: 1rem;
+  right: -13rem;
   background-color: darkgray;
   border-radius: 7px;
   color: white;
@@ -55,5 +54,9 @@ const hey = (context) => {
 .hover-me:hover {
   background-color: rgb(197, 206, 199) !important;
   cursor: pointer;
+}
+.hover-me > div:hover {
+  font-weight: 700;
+  color: rgb(59, 112, 61);
 }
 </style>

@@ -8,8 +8,8 @@
       </div>
       <nav>
         <RouterLink
-          v-for="brand in brands"
           :to="'/cars/' + brand.toLowerCase()"
+          v-for="brand in brands"
           >{{ brand }}</RouterLink
         >
       </nav>

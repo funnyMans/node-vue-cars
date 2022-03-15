@@ -11,6 +11,7 @@
         </div>
       </div>
     </section>
+
     <div class="categories">
       <span
         v-for="(item, idx) in categories"
@@ -18,10 +19,15 @@
         @click="store.dispatch('deleteCategories', idx)"
         >{{ item }}</span
       >
+      <button
+        class="clear-all"
+        v-if="categories.length"
+        @click="store.dispatch('deleteAllCategories')"
+      >
+        Clear
+      </button>
     </div>
-    <v-btn v-if="categories.length" variant="outlined" color="error"
-      >Clear</v-btn
-    >
+
     <section class="cars-list">
       <SingleCar
         v-for="car in filteredCars"
@@ -29,6 +35,7 @@
         :details="car"
       />
     </section>
+
     <span v-if="!filteredCars.length" class="no-match-text"
       >No match found</span
     >
@@ -42,28 +49,25 @@ import { useRoute } from "vue-router";
 import SingleCar from "./SingleCar.vue";
 import DropdownMenu from "./DropdownMenu.vue";
 
+const store = useStore();
 const filterText = ref("");
-
 const {
   params: { brand },
 } = useRoute();
-const store = useStore();
 const title = brand.toUpperCase();
-const cars = computed(() => store.getters.getActiveCars(brand));
 const categories = computed(() => store.getters.getCategories);
+
+const cars = computed(() => store.getters.getActiveCars(brand));
 const filteredCars = computed(() => {
   return cars.value.filter((car) => {
+    const text = filterText.value.replaceAll(/[\W_]+/g, "");
+    const filterByModel = car.Model.toLowerCase()
+      .replaceAll(/[\W_]+/g, "")
+      .includes(text);
     if (categories.value.length) {
-      return (
-        categories.value.includes(car.Category) &&
-        car.Model.toLowerCase()
-          .replaceAll(/[\W_]+/g, "")
-          .includes(filterText.value)
-      );
+      return categories.value.includes(car.Category) && filterByModel;
     } else {
-      return car.Model.toLowerCase()
-        .replaceAll(/[\W_]+/g, "")
-        .includes(filterText.value);
+      return filterByModel;
     }
   });
 });
@@ -76,7 +80,7 @@ const filteredCars = computed(() => {
 }
 .header-container {
   width: 84%;
-  margin: 3rem auto;
+  margin: 4rem auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -114,24 +118,27 @@ const filteredCars = computed(() => {
   color: antiquewhite;
 }
 .categories {
-  margin-left: 2rem;
-  width: 30%;
+  min-height: 2.5rem;
+  margin-right: 5rem;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-end;
   flex-wrap: wrap;
   column-gap: 1rem;
 }
 .categories > span {
-  padding: 5px;
+  padding: 5px 10px;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 1.25rem;
   color: white;
   border-radius: 5px;
 }
-
 .categories > span:hover {
   cursor: pointer;
-  background-color: lightgreen;
+  background: -webkit-linear-gradient(to right, #cbcaa5, #334d50);
+  background: linear-gradient(to right, #cbcaa5, #334d50);
+}
+.categories > button > div:hover {
+  color: black;
 }
 .cars-list {
   width: 80%;
@@ -149,7 +156,23 @@ const filteredCars = computed(() => {
   font-size: 3rem;
   margin-top: 15rem;
 }
-.v-btn {
-  margin: 1.5rem 0 0 3rem;
+
+.clear-all {
+  color: rgb(223, 211, 211);
+  font-size: 1rem;
+  font-weight: 550;
+  border-radius: 5px;
+  padding: 5px 8px;
+  background: rgb(253, 29, 29);
+  background: linear-gradient(
+    90deg,
+    rgba(253, 29, 29, 1) 50%,
+    rgba(252, 176, 69, 1) 100%
+  );
+  transition: 0.3s;
+}
+
+.clear-all:hover {
+  transform: scale(1.05);
 }
 </style>

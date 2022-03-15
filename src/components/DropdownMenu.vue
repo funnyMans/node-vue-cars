@@ -6,14 +6,15 @@
       </template>
 
       <v-list class="bg-dark">
-        <v-list-item
+        <div
           class="hover-me"
+          textColor="rgb(255,255,255)"
           v-for="(item, index) in data.items"
           :key="index"
           @click="store.dispatch('selectCategory', item.title)"
         >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
+          <span>{{ item.title }}</span>
+        </div>
       </v-list>
     </v-menu>
   </div>
@@ -43,20 +44,30 @@ const data = reactive({
   cursor: pointer !important;
 }
 .bg-dark {
-  display: flex;
   position: absolute;
+  display: flex;
+  flex-direction: column;
   top: 1rem;
-  right: -13rem;
+  left: 0;
   background-color: darkgray;
   border-radius: 7px;
   color: white;
 }
+.hover-me {
+  padding: 10px;
+  min-width: 8rem;
+  font-size: 1.1rem;
+}
+.hover-me:active {
+  color: green;
+  font-size: 1.3rem;
+}
 .hover-me:hover {
   background-color: rgb(197, 206, 199) !important;
   cursor: pointer;
+  background-color: lightgreen;
 }
-.hover-me > div:hover {
-  font-weight: 700;
-  color: rgb(59, 112, 61);
+.v-list-item-title > span {
+  display: none !important;
 }
 </style>

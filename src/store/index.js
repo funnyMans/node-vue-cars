@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
+    activeCars: [],
     categories: [],
     cars: [
       {
@@ -437,40 +438,61 @@ export default createStore({
     getAllCars: (state) => {
       return state.cars;
     },
+
     getCategories: ({ categories }) => {
       return categories;
     },
+
     getAllMakes: ({ cars }) => {
       let makes = ["all"];
       cars.forEach((car) => makes.push(car.Make));
       return [...new Set(makes)];
     },
-    getActiveCars:
-      ({ cars }) =>
-      (brand) => {
-        return brand !== "all"
-          ? cars.filter((car) => car.Make.toLowerCase() === brand)
-          : cars;
-      },
+
+    getActiveCars: (state) => {
+      return state.activeCars;
+    },
   },
+
   mutations: {
+    SET_ACTIVE_CARS(state, brand) {
+      if (brand === "all") {
+        state.activeCars = state.cars;
+      } else {
+        state.activeCars = [
+          ...state.cars.filter(
+            (car) => car.Make.toLowerCase() === brand.toLowerCase()
+          ),
+        ];
+      }
+    },
+
     SELECT_CATEGORY({ categories }, category) {
       !categories.includes(category) && categories.push(category);
     },
+
     DELETE_CATEGORY({ categories }, idx) {
       categories.splice(idx, 1);
     },
+
     DELETE_ALL({ categories }) {
       categories.splice(0);
     },
   },
+
   actions: {
+    setActiveCars({ commit }, brand) {
+      commit("SET_ACTIVE_CARS", brand);
+    },
+    
     selectCategory({ commit }, category) {
       commit("SELECT_CATEGORY", category);
     },
+
     deleteCategories({ commit }, category) {
       commit("DELETE_CATEGORY", category);
     },
+
     deleteAllCategories({ commit }) {
       commit("DELETE_ALL");
     },

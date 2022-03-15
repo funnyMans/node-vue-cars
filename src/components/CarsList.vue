@@ -5,26 +5,29 @@
         {{ title }} {{ title === "ALL" ? "MODELS" : "" }}
       </h1>
       <div class="controllers">
-        <DropdownMenu />
         <div class="search">
-          <input type="text" v-model="filterText" placeholder="Search..." />
+          <input type="text" v-model="searchValue" placeholder="Search..." />
         </div>
       </div>
     </section>
 
     <div class="categories">
-      <span
+      <div class="filter-container">
+        <DropdownMenu />
+      </div>
+      <div
         v-for="(item, idx) in categories"
         :key="idx"
         @click="store.dispatch('deleteCategories', idx)"
-        >{{ item }}</span
       >
+        {{ item }}
+      </div>
       <button
         class="clear-all"
         v-if="categories.length"
-        @click="store.dispatch('deleteAllCategories')"
+        @click="emptyFilterText"
       >
-        Clear
+        Clear All
       </button>
     </div>
 
@@ -43,33 +46,47 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import SingleCar from "./SingleCar.vue";
 import DropdownMenu from "./DropdownMenu.vue";
 
 const store = useStore();
-const filterText = ref("");
+const searchValue = ref("");
 const {
   params: { brand },
 } = useRoute();
 const title = brand.toUpperCase();
 const categories = computed(() => store.getters.getCategories);
+let cars = computed(() => store.getters.getActiveCars);
 
-const cars = computed(() => store.getters.getActiveCars(brand));
 const filteredCars = computed(() => {
-  return cars.value.filter((car) => {
-    const text = filterText.value.replaceAll(/[\W_]+/g, "");
-    const filterByModel = car.Model.toLowerCase()
-      .replaceAll(/[\W_]+/g, "")
-      .includes(text);
-    if (categories.value.length) {
-      return categories.value.includes(car.Category) && filterByModel;
-    } else {
-      return filterByModel;
-    }
-  });
+  return (
+    cars.value &&
+    cars.value.filter((car) => {
+      const searchText =
+        searchValue.value && searchValue.value.replaceAll(/[\W_]+/g, "");
+      const isFilterBySearch = searchText
+        ? car.Model.toLowerCase()
+            .replaceAll(/[\W_]+/g, "")
+            .includes(searchText)
+        : true;
+      if (categories.value.length) {
+        return categories.value.includes(car.Category) && isFilterBySearch;
+      }
+      return isFilterBySearch;
+    })
+  );
+});
+
+const emptyFilterText = () => {
+  store.dispatch("deleteAllCategories");
+  return (searchValue.value = "");
+};
+
+onMounted(() => {
+  store.dispatch("setActiveCars", brand);
 });
 </script>
 
@@ -88,6 +105,13 @@ const filteredCars = computed(() => {
 .controllers {
   display: flex;
   column-gap: 2rem;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.filter-container {
+  height: 100%;
+  margin-top: 15px;
 }
 .list-title {
   font-family: "Times New Roman", Times, serif;
@@ -101,8 +125,9 @@ const filteredCars = computed(() => {
   cursor: pointer;
 }
 .search > input {
-  max-width: 10rem;
-  height: 2rem;
+  min-width: 15rem;
+
+  height: 3rem;
   border-radius: 3px;
   margin-left: 3px;
 }
@@ -119,27 +144,27 @@ const filteredCars = computed(() => {
 }
 .categories {
   min-height: 2.5rem;
-  margin-right: 5rem;
+  margin-left: 5rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
+
+  align-items: flex-end;
   flex-wrap: wrap;
   column-gap: 1rem;
 }
-.categories > span {
+.categories > div {
   padding: 5px 10px;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   color: white;
   border-radius: 5px;
 }
-.categories > span:hover {
+.categories > div:hover {
   cursor: pointer;
   background: -webkit-linear-gradient(to right, #cbcaa5, #334d50);
   background: linear-gradient(to right, #cbcaa5, #334d50);
 }
-.categories > button > div:hover {
-  color: black;
-}
+
 .cars-list {
   width: 80%;
   margin: 0 auto;
@@ -158,11 +183,12 @@ const filteredCars = computed(() => {
 }
 
 .clear-all {
+  height: 2.5rem;
   color: rgb(223, 211, 211);
   font-size: 1rem;
   font-weight: 550;
-  border-radius: 5px;
-  padding: 5px 8px;
+  border-radius: 10px;
+
   background: rgb(253, 29, 29);
   background: linear-gradient(
     90deg,
@@ -174,5 +200,6 @@ const filteredCars = computed(() => {
 
 .clear-all:hover {
   transform: scale(1.05);
+  cursor: pointer;
 }
 </style>

@@ -24,8 +24,8 @@
 import { useStore } from "vuex";
 import { RouterLink } from "vue-router";
 
-const state = useStore();
-const brands = state.getters.getAllMakes;
+const store = useStore();
+const brands = store.getters.getAllMakes;
 </script>
 
 <style scoped>
@@ -93,9 +93,6 @@ nav > a {
   nav > a {
     font-size: 0.8rem;
   }
-}
-
-@media screen and (max-width: 550px) {
   .logo {
     display: none;
   }

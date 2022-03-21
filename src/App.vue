@@ -3,7 +3,19 @@
 </template>
 
 <script setup>
+import axios from "axios";
+import { onBeforeMount } from "vue";
+import { useStore } from "vuex";
 import Layout from "./layout/Layout.vue";
+
+const store = useStore();
+
+onBeforeMount(() => {
+  const getCarsUrL = `http://localhost:8080/api/v1/cars`;
+  axios.get(getCarsUrL).then((data) => {
+    store.dispatch("setCarsData", data);
+  });
+});
 </script>
 
 <style>
@@ -12,6 +24,7 @@ import Layout from "./layout/Layout.vue";
 body::-webkit-scrollbar {
   display: none !important;
 }
+
 #app {
   width: 100%;
   display: flex;

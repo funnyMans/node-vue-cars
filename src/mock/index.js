@@ -8,3 +8,12 @@ export const brands = [
   "porsche",
   "toyota",
 ];
+
+export const data = [
+  { title: "Sedan" },
+  { title: "Coupe" },
+  { title: "SUV" },
+  { title: "Hatchback" },
+  { title: "Van/Minivan" },
+  { title: "Convertible" },
+];

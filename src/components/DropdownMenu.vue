@@ -1,16 +1,16 @@
 <template>
   <div class="text-center">
-    <v-menu top :offset-x="data.offset">
+    <v-menu>
       <template v-slot:activator="{ props }">
         <v-btn color="secondary" dark v-bind="props"> Filter </v-btn>
       </template>
 
       <v-list class="bg-dark">
         <div
+          v-for="(item, index) in data"
+          :key="index"
           class="hover-me"
           textColor="rgb(255,255,255)"
-          v-for="(item, index) in data.items"
-          :key="index"
           @click="store.dispatch('selectCategory', item.title)"
         >
           <span>{{ item.title }}</span>
@@ -22,22 +22,9 @@
 
 <script setup>
 import { useStore } from "vuex";
-import { defineProps, reactive } from "vue";
+import { data } from "../mock/index";
+
 const store = useStore();
-const props = defineProps({
-  isOpen: Boolean,
-});
-const data = reactive({
-  items: [
-    { title: "Sedan" },
-    { title: "Coupe" },
-    { title: "SUV" },
-    { title: "Hatchback" },
-    { title: "Van/Minivan" },
-    { title: "Convertible" },
-  ],
-  offset: true,
-});
 </script>
 <style scoped>
 .text-center:hover {

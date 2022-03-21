@@ -8,8 +8,8 @@
       </div>
       <nav>
         <RouterLink
-          :to="'/cars/' + brand.toLowerCase()"
           v-for="brand in brands"
+          :to="'/cars/' + brand.toLowerCase()"
           >{{ brand }}</RouterLink
         >
       </nav>
@@ -21,11 +21,11 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import { useStore } from "vuex";
 import { RouterLink } from "vue-router";
-
 const store = useStore();
-const brands = store.getters.getAllMakes;
+const brands = computed(() => store.getters.getAllMakes);
 </script>
 
 <style scoped>
@@ -39,7 +39,6 @@ const brands = store.getters.getAllMakes;
 .logo {
   width: 20%;
 }
-
 .logo > a {
   font-size: 2rem;
   display: flex;
@@ -83,7 +82,6 @@ nav > a {
     font-size: 1.1rem;
     font-weight: 500;
   }
-
   .logo > a > img {
     margin-left: 0;
   }

@@ -15,7 +15,7 @@
     </div>
 
     <v-card-actions>
-      <button @click="showDetails = !showDetails" class="show-details">
+      <button class="show-details" @click="showDetails = !showDetails">
         <span>{{ !showDetails ? "Show details" : "Hide details" }}</span>
       </button>
     </v-card-actions>
@@ -73,7 +73,6 @@ const showDetails = ref(false);
   font-size: 1.2rem;
   font-weight: 1000 !important;
 }
-
 .img-size {
   width: 80%;
   transition: 0.7s;

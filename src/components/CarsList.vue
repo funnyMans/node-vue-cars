@@ -2,11 +2,11 @@
   <div class="list">
     <section class="header-container">
       <h1 class="list-title">
-        {{ title }} {{ title === "ALL" ? "MODELS" : "" }}
+        {{ brand }} {{ brand === "all" ? "models" : "" }}
       </h1>
       <div class="controllers">
         <div class="search">
-          <input type="text" v-model="searchValue" placeholder="Search..." />
+          <input v-model="searchValue" type="text" placeholder="Search..." />
         </div>
       </div>
     </section>
@@ -22,11 +22,7 @@
       >
         {{ item }}
       </div>
-      <button
-        class="clear-all"
-        v-if="categories.length"
-        @click="emptyFilterText"
-      >
+      <button v-if="categories.length" class="clear-all" @click="resetFilters">
         Clear All
       </button>
     </div>
@@ -46,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import SingleCar from "./SingleCar.vue";
@@ -57,9 +53,8 @@ const searchValue = ref("");
 const {
   params: { brand },
 } = useRoute();
-const title = brand.toUpperCase();
+const cars = computed(() => store.getters.getActiveCars);
 const categories = computed(() => store.getters.getCategories);
-let cars = computed(() => store.getters.getActiveCars);
 
 const filteredCars = computed(() => {
   return (
@@ -80,12 +75,9 @@ const filteredCars = computed(() => {
   );
 });
 
-const emptyFilterText = () => {
-  store.dispatch("deleteAllCategories");
-  return (searchValue.value = "");
-};
+const resetFilters = () => store.dispatch("deleteAllCategories");
 
-onMounted(() => {
+onBeforeMount(() => {
   store.dispatch("setActiveCars", brand);
 });
 </script>
@@ -119,6 +111,7 @@ onMounted(() => {
   text-align: center;
   color: bisque;
   transition: 1s;
+  text-transform: uppercase;
 }
 .list-title:hover {
   transform: scale(0.92);

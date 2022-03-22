@@ -14,10 +14,6 @@ export default createStore({
   ],
 
   getters: {
-    getAllCars: (state) => {
-      return state.cars;
-    },
-
     getCategories: (state) => {
       return state.categories;
     },

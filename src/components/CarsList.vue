@@ -1,9 +1,7 @@
 <template>
   <div class="list">
     <section class="header-container">
-      <h1 class="list-title">
-        {{ brand }} {{ brand === "all" ? "models" : "" }}
-      </h1>
+      <h1 class="list-title">{{ brand }} {{ brand === "all" ? "models" : "" }}</h1>
       <div class="controllers">
         <div class="search">
           <input v-model="searchValue" type="text" placeholder="Search..." />
@@ -15,28 +13,16 @@
       <div class="filter-container">
         <DropdownMenu />
       </div>
-      <div
-        v-for="(item, idx) in categories"
-        :key="idx"
-        @click="store.dispatch('deleteCategories', idx)"
-      >
+      <div v-for="(item, idx) in categories" :key="idx" @click="deleteCategory(idx)">
         {{ item }}
       </div>
-      <button v-if="categories.length" class="clear-all" @click="resetFilters">
-        Clear All
-      </button>
+      <button v-if="categories.length" class="clear-all" @click="resetFilters">Clear All</button>
     </div>
 
     <section class="cars-list">
-      <SingleCar
-        v-for="car in filteredCars"
-        :key="filteredCars.Model"
-        :details="car"
-      />
+      <SingleCar v-for="car in filteredCars" :key="filteredCars.Model" :details="car" />
     </section>
-    <span v-if="!filteredCars.length" class="no-match-text"
-      >No match found</span
-    >
+    <span v-if="!filteredCars.length" class="no-match-text">No match found</span>
   </div>
 </template>
 
@@ -50,9 +36,9 @@ import DropdownMenu from "./DropdownMenu.vue";
 
 const store = useStore();
 const searchValue = ref("");
-const {
-  params: { brand },
-} = useRoute();
+const { params } = useRoute();
+const { brand } = params;
+
 const cars = computed(() => store.getters.getActiveCars);
 const categories = computed(() => store.getters.getCategories);
 
@@ -60,8 +46,7 @@ const filteredCars = computed(() => {
   return (
     cars.value &&
     cars.value.filter((car) => {
-      const searchText =
-        searchValue.value && searchValue.value.replaceAll(/[\W_]+/g, "");
+      const searchText = searchValue.value && searchValue.value.replaceAll(/[\W_]+/g, "");
       const isFilterBySearch = searchText
         ? car.Model.toLowerCase()
             .replaceAll(/[\W_]+/g, "")
@@ -74,13 +59,17 @@ const filteredCars = computed(() => {
     })
   );
 });
-
+const deleteCategory = (idx) => store.dispatch("deleteCategories", idx);
 const resetFilters = () => store.dispatch("deleteAllCategories");
 
 onMounted(() => {
+  const getActiveCarsUrl = `http://localhost:8080/api/v1/cars/${brand}`;
+
   axios
-    .get(`http://localhost:8080/api/v1/cars/${brand}`)
-    .then((res) => store.dispatch("setActiveCars", res.data))
+    .get(getActiveCarsUrl)
+    .then((res) => {
+      store.dispatch("setActiveCars", res.data);
+    })
     .catch((err) => console.log(err));
 });
 </script>
@@ -180,11 +169,7 @@ onMounted(() => {
   font-weight: 550;
   border-radius: 10px;
   background: rgb(253, 29, 29);
-  background: linear-gradient(
-    90deg,
-    rgba(253, 29, 29, 1) 50%,
-    rgba(252, 176, 69, 1) 100%
-  );
+  background: linear-gradient(90deg, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
   transition: 0.3s;
 }
 .clear-all:hover {

@@ -1,20 +1,14 @@
 <template>
   <v-app-bar color="teal-darken-4" class="text-white bg-dark">
     <div class="logo">
-      <router-link to="/"
-        ><img src="/wheel-svgrepo-com.svg" alt="" />Top Cars</router-link
-      >
+      <router-link to="/"><img src="/wheel-svgrepo-com.svg" alt="logo" />Top Cars</router-link>
     </div>
     <nav>
-      <RouterLink
-        v-for="(brand, idx) in brands"
-        :key="idx"
-        :to="'/cars/' + brand.toLowerCase()"
-        >{{ brand }}</RouterLink
-      >
+      <RouterLink v-for="(brand, idx) in brands" :key="idx" :to="'/cars/' + brand.toLowerCase()">{{ brand }}</RouterLink>
     </nav>
   </v-app-bar>
 </template>
+
 <script setup>
 import axios from "axios";
 import { computed, onMounted } from "vue";
@@ -26,12 +20,15 @@ const brands = computed(() => store.getters.getAllMakes);
 
 onMounted(() => {
   const getBrandsUrl = `http://localhost:8080/api/v1/cars/brands`;
-  axios
-    .get(getBrandsUrl)
-    .then((res) => {
-      store.dispatch("setBrands", res.data);
-    })
-    .catch((err) => console.log(err));
+
+  if (!brands.value.length) {
+    axios
+      .get(getBrandsUrl)
+      .then((res) => {
+        store.dispatch("setBrands", res.data);
+      })
+      .catch((err) => console.log(err));
+  }
 });
 </script>
 
@@ -67,8 +64,7 @@ nav > a {
   color: black;
   font-family: "Times New Roman", Times, serif;
   text-decoration: none !important;
-  filter: invert(60%) sepia(30%) saturate(5623%) hue-rotate(157deg)
-    brightness(89%) contrast(101%);
+  filter: invert(60%) sepia(30%) saturate(5623%) hue-rotate(157deg) brightness(89%) contrast(101%);
 }
 .logo > a > img {
   width: 10%;

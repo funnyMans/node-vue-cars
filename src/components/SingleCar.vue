@@ -24,13 +24,15 @@
 
 <script setup>
 import { defineProps, ref } from "vue";
-const showDetails = ref(false);
-const showHideDetails = () => {
-  showDetails.value = !showDetails.value;
-};
 const props = defineProps({
   details: Object,
 });
+
+const showDetails = ref(false);
+
+const showHideDetails = () => {
+  showDetails.value = !showDetails.value;
+};
 </script>
 
 <style scoped>

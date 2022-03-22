@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-btn color="secondary" dark v-bind="props"> Filter </v-btn>
+        <v-btn v-bind="props" color="secondary" dark> Filter </v-btn>
       </template>
 
       <v-list class="bg-dark">
@@ -26,6 +26,7 @@ import { data } from "../mock/index";
 
 const store = useStore();
 </script>
+
 <style scoped>
 .text-center:hover {
   cursor: pointer !important;

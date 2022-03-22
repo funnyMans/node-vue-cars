@@ -15,7 +15,7 @@
     </div>
 
     <v-card-actions>
-      <button class="show-details" @click="showDetails = !showDetails">
+      <button class="show-details" @click="showHideDetails">
         <span>{{ !showDetails ? "Show details" : "Hide details" }}</span>
       </button>
     </v-card-actions>
@@ -24,12 +24,13 @@
 
 <script setup>
 import { defineProps, ref } from "vue";
-
+const showDetails = ref(false);
+const showHideDetails = () => {
+  showDetails.value = !showDetails.value;
+};
 const props = defineProps({
   details: Object,
 });
-
-const showDetails = ref(false);
 </script>
 
 <style scoped>

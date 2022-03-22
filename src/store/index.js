@@ -5,43 +5,39 @@ export default createStore({
   state: {
     activeCars: [],
     categories: [],
-    cars: [],
-    plugins: [createPersistedState()],
+    brands: [],
   },
+  plugins: [
+    createPersistedState({
+      data: [],
+    }),
+  ],
 
   getters: {
     getAllCars: (state) => {
       return state.cars;
     },
 
-    getCategories: ({ categories }) => {
-      return categories;
+    getCategories: (state) => {
+      return state.categories;
     },
 
-    getAllMakes: ({ cars }) => {
-      let makes = ["all"];
-      cars.forEach((car) => makes.push(car.Make));
-      return [...new Set(makes)];
+    getAllMakes: (state) => {
+      return state.brands;
     },
 
     getActiveCars: (state) => {
-      return state.cars.length ? state.activeCars : undefined;
+      return state.activeCars;
     },
   },
 
   mutations: {
-    SET_CARS_DATA(state, carsData) {
-      return (state.cars = carsData);
+    SET_BRANDS(state, carsData) {
+      return (state.brands = carsData);
     },
 
-    SET_ACTIVE_CARS(state, brand) {
-      if (brand === "all") {
-        state.activeCars = state.cars;
-      } else {
-        state.activeCars = [
-          ...state.cars.filter((car) => car.Make.toLowerCase() === brand),
-        ];
-      }
+    SET_ACTIVE_CARS(state, data) {
+      state.activeCars = data;
     },
 
     SELECT_CATEGORY({ categories }, category) {
@@ -58,12 +54,12 @@ export default createStore({
   },
 
   actions: {
-    setCarsData({ commit }, { data }) {
-      commit("SET_CARS_DATA", data);
+    setBrands({ commit }, brandList) {
+      commit("SET_BRANDS", brandList);
     },
 
-    setActiveCars({ commit }, brand) {
-      commit("SET_ACTIVE_CARS", brand);
+    setActiveCars({ commit }, payload) {
+      commit("SET_ACTIVE_CARS", payload);
     },
 
     selectCategory({ commit }, category) {

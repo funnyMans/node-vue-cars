@@ -34,7 +34,6 @@
         :details="car"
       />
     </section>
-
     <span v-if="!filteredCars.length" class="no-match-text"
       >No match found</span
     >
@@ -42,7 +41,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onBeforeMount } from "vue";
+import axios from "axios";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import SingleCar from "./SingleCar.vue";
@@ -77,8 +77,11 @@ const filteredCars = computed(() => {
 
 const resetFilters = () => store.dispatch("deleteAllCategories");
 
-onBeforeMount(() => {
-  store.dispatch("setActiveCars", brand);
+onMounted(() => {
+  axios
+    .get(`http://localhost:8080/api/v1/cars/${brand}`)
+    .then((res) => store.dispatch("setActiveCars", res.data))
+    .catch((err) => console.log(err));
 });
 </script>
 
@@ -100,7 +103,6 @@ onBeforeMount(() => {
   flex-direction: column;
   align-items: flex-end;
 }
-
 .filter-container {
   height: 100%;
   margin-top: 15px;
@@ -119,7 +121,6 @@ onBeforeMount(() => {
 }
 .search > input {
   min-width: 15rem;
-
   height: 3rem;
   border-radius: 3px;
   margin-left: 3px;
@@ -140,7 +141,6 @@ onBeforeMount(() => {
   margin-left: 5rem;
   display: flex;
   justify-content: flex-start;
-
   align-items: flex-end;
   flex-wrap: wrap;
   column-gap: 1rem;
@@ -157,7 +157,6 @@ onBeforeMount(() => {
   background: -webkit-linear-gradient(to right, #cbcaa5, #334d50);
   background: linear-gradient(to right, #cbcaa5, #334d50);
 }
-
 .cars-list {
   width: 80%;
   margin: 0 auto;
@@ -174,14 +173,12 @@ onBeforeMount(() => {
   font-size: 3rem;
   margin-top: 15rem;
 }
-
 .clear-all {
   height: 2.5rem;
   color: rgb(223, 211, 211);
   font-size: 1rem;
   font-weight: 550;
   border-radius: 10px;
-
   background: rgb(253, 29, 29);
   background: linear-gradient(
     90deg,
@@ -190,7 +187,6 @@ onBeforeMount(() => {
   );
   transition: 0.3s;
 }
-
 .clear-all:hover {
   transform: scale(1.05);
   cursor: pointer;

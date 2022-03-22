@@ -19,7 +19,7 @@ import { RouterLink } from "vue-router";
   width: 100%;
   height: 100%;
 }
-.error-page .title {
+.error-page > .title {
   color: rgb(143, 111, 219);
   font-size: 3rem;
 }
